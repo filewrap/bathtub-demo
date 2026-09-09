@@ -9,13 +9,12 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <section className="container-content py-16 md:py-24">
+    <section className="container-content pb-20 pt-[calc(var(--size-header)+3rem)] md:pb-32 md:pt-[calc(var(--size-header)+5rem)]">
       <PageHeader
-        eyebrow="Contact"
         title="Contact us (preferably after dark)."
-        lede="Tell us about the tub, the room, or the week you need to drown. We read everything."
+        lede="We answer between dusk and the hour no one admits to being awake."
       />
-      <div className="mt-14 md:mt-20">
+      <div className="mt-16 md:mt-24">
         <ContactForm />
       </div>
     </section>

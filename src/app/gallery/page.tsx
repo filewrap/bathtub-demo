@@ -9,14 +9,16 @@ export const metadata: Metadata = {
 };
 
 export default function GalleryPage() {
+  const images = GALLERY_ITEMS.filter((i) => i.type === "image").length;
+  const videos = GALLERY_ITEMS.length - images;
   return (
-    <section className="container-content py-16 md:py-24">
+    <section className="container-content pb-20 pt-[calc(var(--size-header)+3rem)] md:pb-32 md:pt-[calc(var(--size-header)+5rem)]">
       <PageHeader
-        eyebrow="Gallery"
         title="Proof, in low light."
         lede="Every tub is a small, private galaxy. Pick the one you want to disappear into."
+        meta={`${images} images, ${videos} ${videos === 1 ? "film" : "films"}`}
       />
-      <div className="mt-14 md:mt-20">
+      <div className="mt-16 md:mt-24">
         <GalleryGrid items={GALLERY_ITEMS} />
       </div>
     </section>

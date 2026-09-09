@@ -10,10 +10,10 @@ import { ConfiguratorSummary } from "./ConfiguratorSummary";
 export function Configurator() {
   return (
     <ConfiguratorController>
-      <div className="grid gap-8 lg:grid-cols-[1fr_22rem] lg:items-start">
-        <div className="grid gap-5">
-          {GROUPS.map((g) => (
-            <OptionGroupPanel key={g.key} group={g} />
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-start lg:gap-16">
+        <div className="grid gap-12">
+          {GROUPS.map((g, i) => (
+            <OptionGroupPanel key={g.key} group={g} index={i} />
           ))}
         </div>
         <div className="grid gap-5 lg:sticky lg:top-[calc(var(--size-header)+1rem)]">
