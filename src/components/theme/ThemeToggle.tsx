@@ -5,8 +5,8 @@ import { useTheme } from "./ThemeProvider";
 
 /**
  * Switches Dark <-> Light through ThemeProvider and indicates the active
- * theme (AC-NYX-002.2, 002.4). Renders a neutral state before hydration so
- * server and client markup match.
+ * theme (AC-NYX-002.2, 002.4). A sliding brass knob marks the active side.
+ * Renders a neutral state before hydration so server and client match.
  */
 export function ThemeToggle({ className = "" }: { className?: string }) {
   const { theme, toggleTheme } = useTheme();
@@ -28,29 +28,36 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       title={ready ? (isDark ? "Dark theme" : "Light theme") : undefined}
       data-theme-active={ready ? theme : undefined}
       className={[
-        "group relative inline-flex h-tap min-w-tap items-center gap-2 rounded-full border border-line bg-surface px-3",
-        "text-sm text-ink-muted transition-colors duration-base ease-gravity",
-        "hover:border-line-strong hover:text-ink disabled:opacity-60",
+        "relative inline-flex h-tap w-[4.75rem] shrink-0 items-center rounded-full border border-line p-1",
+        "transition-colors duration-base ease-out hover:border-line-strong disabled:opacity-60",
         className,
       ].join(" ")}
     >
       <span
         aria-hidden="true"
         className={[
-          "grid h-7 w-7 place-items-center rounded-full transition-colors duration-base ease-gravity",
-          ready && isDark ? "bg-accent text-accent-ink" : "text-ink-faint",
+          "absolute top-1 h-[calc(var(--size-tap)-0.5rem)] w-[calc(var(--size-tap)-0.5rem)] rounded-full bg-accent shadow-glow transition-transform duration-slow ease-out",
+          ready && !isDark ? "translate-x-[calc(4.75rem-var(--size-tap)-2px)]" : "translate-x-0",
+        ].join(" ")}
+        style={{ left: "0.25rem" }}
+      />
+      <span
+        aria-hidden="true"
+        className={[
+          "relative z-10 grid h-[calc(var(--size-tap)-0.5rem)] w-[calc(var(--size-tap)-0.5rem)] place-items-center rounded-full transition-colors duration-base ease-out",
+          ready && isDark ? "text-accent-ink" : "text-ink-faint",
         ].join(" ")}
       >
-        <Moon size={16} strokeWidth={1.75} />
+        <Moon size={15} strokeWidth={1.75} />
       </span>
       <span
         aria-hidden="true"
         className={[
-          "grid h-7 w-7 place-items-center rounded-full transition-colors duration-base ease-gravity",
-          ready && !isDark ? "bg-accent text-accent-ink" : "text-ink-faint",
+          "relative z-10 ml-auto grid h-[calc(var(--size-tap)-0.5rem)] w-[calc(var(--size-tap)-0.5rem)] place-items-center rounded-full transition-colors duration-base ease-out",
+          ready && !isDark ? "text-accent-ink" : "text-ink-faint",
         ].join(" ")}
       >
-        <Sun size={16} strokeWidth={1.75} />
+        <Sun size={15} strokeWidth={1.75} />
       </span>
       <span className="sr-only">{ready ? (isDark ? "Dark" : "Light") : ""}</span>
     </button>

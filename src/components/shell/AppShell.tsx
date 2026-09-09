@@ -6,9 +6,10 @@ import { HeaderNav } from "./HeaderNav";
 import { Footer } from "./Footer";
 
 /**
- * Persistent shell rendered around every route: header, page outlet, footer.
- * Hosts ThemeProvider and ConsentProvider so theme and consent apply
- * globally, and mounts the ConsentBanner.
+ * Persistent shell rendered around every route: fixed header, page outlet,
+ * footer. Hosts ThemeProvider and ConsentProvider so theme and consent apply
+ * globally, and mounts the ConsentBanner. The header floats over content;
+ * interior pages add their own top offset, the hero runs underneath it.
  */
 export function AppShell({ children }: { children: ReactNode }) {
   return (
@@ -16,7 +17,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <ConsentProvider>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface focus:px-4 focus:py-2 focus:text-ink focus:shadow-lift"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-surface focus:px-4 focus:py-2 focus:text-ink focus:shadow-lift"
         >
           Skip to content
         </a>

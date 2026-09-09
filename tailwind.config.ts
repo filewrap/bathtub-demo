@@ -23,6 +23,10 @@ const config: Config = {
       transparent: "transparent",
       current: "currentColor",
       void: "rgb(var(--color-void) / <alpha-value>)",
+      stage: {
+        DEFAULT: "rgb(var(--color-stage) / <alpha-value>)",
+        deep: "rgb(var(--color-stage-deep) / <alpha-value>)",
+      },
       surface: {
         DEFAULT: "rgb(var(--color-surface) / <alpha-value>)",
         raised: "rgb(var(--color-surface-raised) / <alpha-value>)",
@@ -53,6 +57,7 @@ const config: Config = {
     fontFamily: {
       display: "var(--font-display)",
       body: "var(--font-body)",
+      mono: "var(--font-mono)",
     },
     fontSize: {
       xs: ["var(--text-xs)", { lineHeight: "var(--leading-normal)" }],
@@ -63,9 +68,10 @@ const config: Config = {
       "2xl": ["var(--text-2xl)", { lineHeight: "var(--leading-snug)" }],
       "3xl": ["var(--text-3xl)", { lineHeight: "var(--leading-tight)" }],
       "4xl": ["var(--text-4xl)", { lineHeight: "var(--leading-tight)" }],
-      "5xl": ["var(--text-5xl)", { lineHeight: "1.02" }],
-      "6xl": ["var(--text-6xl)", { lineHeight: "var(--leading-none)" }],
-      "7xl": ["var(--text-7xl)", { lineHeight: "0.96" }],
+      "5xl": ["var(--text-5xl)", { lineHeight: "1.04" }],
+      "6xl": ["var(--text-6xl)", { lineHeight: "1" }],
+      "display-s": ["var(--text-display-s)", { lineHeight: "0.98" }],
+      display: ["var(--text-display)", { lineHeight: "0.92" }],
     },
     spacing: {
       0: "0",
@@ -111,6 +117,9 @@ const config: Config = {
     transitionTimingFunction: {
       gravity: "var(--ease-gravity)",
       drift: "var(--ease-drift)",
+      out: "var(--ease-out)",
+      in: "var(--ease-in)",
+      "in-out": "var(--ease-in-out)",
     },
     extend: {
       maxWidth: {

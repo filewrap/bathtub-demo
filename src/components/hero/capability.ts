@@ -1,3 +1,5 @@
+import type { HeroMedia } from "@/lib/media-manifest";
+
 /**
  * `HeroMediaCapability` (Header Hero blueprint, Integration Contracts).
  * Resolved once at mount by HeroMediaController.
@@ -11,7 +13,12 @@ export type HeroMediaCapability = {
   prefersReducedMotion: boolean;
 };
 
-export type HeroTier = "3d" | "video" | "poster";
+/**
+ * Tier ladder: 3d -> video -> live -> poster. `live` is the hand-built SVG
+ * tub scene: cheap, no network, animated by CSS. 3d and video only enter the
+ * ladder when the manifest marks their assets as present.
+ */
+export type HeroTier = "3d" | "video" | "live" | "poster";
 
 type NetworkInformationLike = {
   effectiveType?: string;
@@ -19,10 +26,7 @@ type NetworkInformationLike = {
 };
 
 function readConnection(): NetworkInformationLike | undefined {
-  const nav = navigator as Navigator & {
-    connection?: NetworkInformationLike;
-    deviceMemory?: number;
-  };
+  const nav = navigator as Navigator & { connection?: NetworkInformationLike };
   return nav.connection;
 }
 
@@ -47,35 +51,34 @@ export function resolveCapability(): HeroMediaCapability {
   const conn = readConnection();
   const raw = conn?.effectiveType;
   const effectiveConnectionType: EffectiveConnectionType =
-    raw === "slow-2g" || raw === "2g" || raw === "3g" || raw === "4g"
-      ? raw
-      : "unknown";
+    raw === "slow-2g" || raw === "2g" || raw === "3g" || raw === "4g" ? raw : "unknown";
   const saveData = Boolean(conn?.saveData);
 
   const nav = navigator as Navigator & { deviceMemory?: number };
   const cores = navigator.hardwareConcurrency ?? 4;
   const memory = nav.deviceMemory ?? 4;
-  const fastEnough =
-    effectiveConnectionType === "4g" || effectiveConnectionType === "unknown";
+  const fastEnough = effectiveConnectionType === "4g" || effectiveConnectionType === "unknown";
 
-  const supports3D =
-    hasWebGL() && cores >= 4 && memory >= 4 && fastEnough && !saveData;
+  const supports3D = hasWebGL() && cores >= 4 && memory >= 4 && fastEnough && !saveData;
 
   return { supports3D, effectiveConnectionType, saveData, prefersReducedMotion };
 }
 
-/** Tier order is 3D -> video -> poster; reduced-motion forces poster. */
-export function pickTier(c: HeroMediaCapability): HeroTier {
+/** Reduced motion forces the static poster. */
+export function pickTier(c: HeroMediaCapability, media: HeroMedia): HeroTier {
   if (c.prefersReducedMotion) return "poster";
-  if (c.supports3D) return "3d";
+  if (media.model.enabled && c.supports3D) return "3d";
   const videoOk =
     !c.saveData &&
     (c.effectiveConnectionType === "4g" ||
       c.effectiveConnectionType === "3g" ||
       c.effectiveConnectionType === "unknown");
-  return videoOk ? "video" : "poster";
+  if (media.video.enabled && videoOk) return "video";
+  return "live";
 }
 
-export function demote(tier: HeroTier): HeroTier {
-  return tier === "3d" ? "video" : "poster";
+export function demote(tier: HeroTier, media: HeroMedia): HeroTier {
+  if (tier === "3d") return media.video.enabled ? "video" : "live";
+  if (tier === "video") return "live";
+  return "poster";
 }

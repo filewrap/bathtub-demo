@@ -1,21 +1,24 @@
+/* Hallmark · macrostructure: Marquee Hero · tone: luxury (quiet, dark, expensive) · anchor hue: brass 38deg
+ * genre: atmospheric · theme: custom (vibe: "quiet, dark, expensive, one candle lit")
+ * paper: rgb(7 8 13) dark · accent: rgb(232 184 115) warm · display: Bodoni Moda · body: Manrope · mono: JetBrains Mono
+ * nav: N10 scroll-morph · footer: Ft5 statement · enrichment: E-B hand-built SVG live tub
+ * axes: dark / high-contrast-serif / warm
+ * Hallmark · pre-emit critique: P5 H4 E4 S5 R4 V4
+ */
+
 /*
- * NYX Atlas design tokens.
- *
- * Single source of truth for the visual world (Web App blueprint, "Visual World
- * and Craft Floor"). Palette switches on `[data-theme]` at the document root
- * (ADR-003). Colors are stored as space-separated RGB channels so Tailwind can
- * apply alpha modifiers (`bg-surface/60`).
- *
- * Components must reference tokens (directly or via Tailwind utilities) and
- * never hardcode hex values.
+ * NYX Atlas design tokens. Single source of truth for the visual world.
+ * Palette switches on [data-theme] at the document root. Colors are stored
+ * as space-separated RGB channels so Tailwind can apply alpha modifiers
+ * (bg-surface/60) and components can write rgb(var(--color-x) / a).
+ * Components reference tokens and never hardcode color values.
  */
 
 :root {
   /* ---------- Typography ---------- */
-  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia,
-    serif;
-  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, sans-serif;
+  --font-display: var(--font-bodoni), "Didot", "Bodoni MT", "Iowan Old Style", Georgia, serif;
+  --font-body: var(--font-manrope), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -23,13 +26,15 @@
   --text-lg: 1.125rem;
   --text-xl: 1.375rem;
   --text-2xl: 1.75rem;
-  --text-3xl: 2.25rem;
-  --text-4xl: 3rem;
-  --text-5xl: 4rem;
-  --text-6xl: 5.5rem;
+  --text-3xl: clamp(2rem, 1.5rem + 2vw, 2.75rem);
+  --text-4xl: clamp(2.5rem, 1.75rem + 3vw, 3.75rem);
+  --text-5xl: clamp(3rem, 2rem + 4.5vw, 5rem);
+  --text-6xl: clamp(3.5rem, 2rem + 6vw, 6.5rem);
+  --text-display-s: clamp(2.75rem, 1.5rem + 5vw, 5.5rem);
+  --text-display: clamp(3.25rem, 1.25rem + 8vw, 8.5rem);
 
   --leading-none: 1;
-  --leading-tight: 1.1;
+  --leading-tight: 1.08;
   --leading-snug: 1.25;
   --leading-normal: 1.5;
   --leading-relaxed: 1.7;
@@ -51,9 +56,9 @@
   --space-24: 6rem;
   --space-32: 8rem;
 
-  /* Minimum touch target (craft floor: >= 44px). */
+  /* Minimum touch target (>= 44px). */
   --size-tap: 2.75rem;
-  --size-content: 72rem;
+  --size-content: 80rem;
   --size-header: 4.5rem;
 
   /* ---------- Radii ---------- */
@@ -67,8 +72,30 @@
   --motion-base: 320ms;
   --motion-slow: 640ms;
   --motion-drift: 1200ms;
+  --dur-fast: var(--motion-fast);
+  --dur-base: var(--motion-base);
+  --dur-slow: var(--motion-slow);
   --ease-gravity: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-drift: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: var(--ease-gravity);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---------- Tub scene: always night, theme-independent ---------- */
+  --color-stage: 10 11 18;
+  --color-stage-deep: 5 6 10;
+  --tub-acrylic-top: 241 237 229;
+  --tub-acrylic-body: 206 200 188;
+  --tub-acrylic-rim: 255 253 249;
+  --tub-iron-top: 48 51 74;
+  --tub-iron-body: 22 24 38;
+  --tub-iron-rim: 84 88 118;
+  --tub-stone-top: 152 154 170;
+  --tub-stone-body: 98 100 118;
+  --tub-stone-rim: 180 182 200;
+  --water-still: 34 38 64;
+  --water-warm: 66 56 92;
+  --water-led: 122 96 200;
 }
 
 /* ---------- Dark theme (default) ---------- */
@@ -76,35 +103,30 @@
 [data-theme="dark"] {
   color-scheme: dark;
 
-  /* Void background: blue-black, never pure #000. #07080D */
   --color-void: 7 8 13;
-  /* Layered deep indigo/violet surfaces. */
-  --color-surface: 13 15 24; /* #0D0F18 */
-  --color-surface-raised: 20 22 36; /* #141624 */
-  --color-surface-overlay: 28 30 48; /* #1C1E30 */
+  --color-surface: 13 15 24;
+  --color-surface-raised: 20 22 36;
+  --color-surface-overlay: 28 30 48;
 
-  /* Text. Body ink on void: ~14.5:1. Muted on surface: ~7.5:1. */
-  --color-ink: 236 236 244; /* #ECECF4 */
-  --color-ink-muted: 168 170 190; /* #A8AABE */
-  --color-ink-faint: 110 113 138; /* #6E718A, decorative only */
+  --color-ink: 236 236 244;
+  --color-ink-muted: 168 170 190;
+  --color-ink-faint: 110 113 138;
 
-  --color-line: 38 41 62; /* #26293E */
-  --color-line-strong: 62 66 94; /* #3E425E */
+  --color-line: 38 41 62;
+  --color-line-strong: 62 66 94;
 
-  /* Cosmic mid-tones. */
-  --color-cosmic-blue: 92 122 214; /* #5C7AD6 */
-  --color-cosmic-violet: 138 108 214; /* #8A6CD6 */
-  --color-cosmic-indigo: 58 62 128; /* #3A3E80 */
+  --color-cosmic-blue: 92 122 214;
+  --color-cosmic-violet: 138 108 214;
+  --color-cosmic-indigo: 58 62 128;
 
-  /* The single source of light: brass/candle. #E8B873 */
+  /* The single source of light: brass. */
   --color-accent: 232 184 115;
-  --color-accent-ink: 24 18 8; /* text on accent fills, ~11:1 */
+  --color-accent-ink: 24 18 8;
 
   --color-focus: 232 184 115;
   --color-danger: 226 118 118;
   --color-success: 126 196 150;
 
-  /* Depth: soft, low, diffuse. No hard drop shadows. */
   --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.35), 0 8px 24px -8px rgb(0 0 0 / 0.5);
   --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.4), 0 24px 48px -16px rgb(0 0 0 / 0.6);
   --shadow-glow: 0 0 0 1px rgb(var(--color-accent) / 0.25),
@@ -115,36 +137,31 @@
 [data-theme="light"] {
   color-scheme: light;
 
-  --color-void: 247 244 238; /* #F7F4EE warm off-white */
-  --color-surface: 255 253 249; /* #FFFDF9 */
-  --color-surface-raised: 241 237 229; /* #F1EDE5 */
-  --color-surface-overlay: 232 227 217; /* #E8E3D9 */
+  --color-void: 247 244 238;
+  --color-surface: 255 253 249;
+  --color-surface-raised: 241 237 229;
+  --color-surface-overlay: 232 227 217;
 
-  /* Ink text on off-white: ~15:1. Muted: ~6.5:1. */
-  --color-ink: 22 22 30; /* #16161E */
-  --color-ink-muted: 84 86 104; /* #545668 */
-  --color-ink-faint: 140 142 160; /* #8C8EA0, decorative only */
+  --color-ink: 22 22 30;
+  --color-ink-muted: 84 86 104;
+  --color-ink-faint: 140 142 160;
 
-  --color-line: 224 219 208; /* #E0DBD0 */
-  --color-line-strong: 196 190 176; /* #C4BEB0 */
+  --color-line: 224 219 208;
+  --color-line-strong: 196 190 176;
 
-  /* Cosmic hues, muted for daylight. */
-  --color-cosmic-blue: 74 96 168; /* #4A60A8 */
-  --color-cosmic-violet: 110 86 172; /* #6E56AC */
-  --color-cosmic-indigo: 198 202 226; /* #C6CAE2 */
+  --color-cosmic-blue: 74 96 168;
+  --color-cosmic-violet: 110 86 172;
+  --color-cosmic-indigo: 198 202 226;
 
-  /* Same brass accent. Darkened variant for text use on light. */
-  --color-accent: 176 122 42; /* #B07A2A, ~4.6:1 on off-white */
+  --color-accent: 176 122 42;
   --color-accent-ink: 255 253 249;
 
   --color-focus: 176 122 42;
   --color-danger: 178 52 52;
   --color-success: 42 122 78;
 
-  --shadow-soft: 0 1px 2px rgb(22 22 30 / 0.06),
-    0 8px 24px -8px rgb(22 22 30 / 0.12);
-  --shadow-lift: 0 2px 6px rgb(22 22 30 / 0.08),
-    0 24px 48px -16px rgb(22 22 30 / 0.18);
+  --shadow-soft: 0 1px 2px rgb(22 22 30 / 0.06), 0 8px 24px -8px rgb(22 22 30 / 0.12);
+  --shadow-lift: 0 2px 6px rgb(22 22 30 / 0.08), 0 24px 48px -16px rgb(22 22 30 / 0.18);
   --shadow-glow: 0 0 0 1px rgb(var(--color-accent) / 0.25),
     0 0 40px -8px rgb(var(--color-accent) / 0.25);
 }
