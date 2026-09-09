@@ -4,7 +4,9 @@ import { CookieChoicesLink } from "@/components/consent/CookieChoicesLink";
 import { Wordmark } from "./Wordmark";
 
 const footerLink =
-  "inline-flex min-h-tap items-center text-ink-muted transition-colors duration-base ease-gravity hover:text-ink";
+  "inline-flex min-h-tap items-center text-sm text-ink-muted transition-colors duration-base ease-gravity hover:text-ink";
+
+const colHeading = "text-xs uppercase tracking-[0.22em] text-ink-faint";
 
 /**
  * Footer: brand sign-off, Privacy Policy link, cookie choices, primary links
@@ -15,16 +17,20 @@ export function Footer() {
 
   return (
     <footer className="border-t border-line bg-surface">
-      <div className="container-content grid gap-8 py-12 md:grid-cols-[1fr_auto] md:items-start">
-        <div className="max-w-md space-y-3">
+      <div className="container-content grid gap-12 py-16 md:grid-cols-[1.5fr_1fr_1fr] md:gap-8 md:py-20">
+        <div className="max-w-sm">
           <Wordmark />
-          <p className="text-sm text-ink-muted">
+          <p className="mt-5 text-ink-muted">
             Your secrets soak with you. We keep nothing we don&apos;t have to.
+          </p>
+          <p className="mt-3 text-sm text-ink-faint">
+            We answer between dusk and the hour no one admits to being awake.
           </p>
         </div>
 
-        <nav aria-label="Footer">
-          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+        <nav aria-label="Footer, explore">
+          <h2 className={colHeading}>Explore</h2>
+          <ul className="mt-4 flex flex-col">
             {PRIMARY_NAV.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className={footerLink}>
@@ -32,6 +38,12 @@ export function Footer() {
                 </Link>
               </li>
             ))}
+          </ul>
+        </nav>
+
+        <nav aria-label="Footer, privacy">
+          <h2 className={colHeading}>Privacy</h2>
+          <ul className="mt-4 flex flex-col">
             <li>
               <Link href="/privacy" className={footerLink}>
                 Privacy Policy
@@ -42,10 +54,15 @@ export function Footer() {
             </li>
           </ul>
         </nav>
+      </div>
 
-        <p className="text-xs text-ink-faint md:col-span-2">
-          &copy; {year} NYX ATLAS &mdash; good night.
-        </p>
+      <div className="border-t border-line">
+        <div className="container-content flex flex-col gap-3 py-6 sm:flex-row sm:items-baseline sm:justify-between">
+          <p className="font-display text-xl text-ink">
+            NYX ATLAS <span className="display-italic text-ink-muted">good night.</span>
+          </p>
+          <p className="text-xs text-ink-faint">&copy; {year} NYX Atlas. All tubs fictional until built.</p>
+        </div>
       </div>
     </footer>
   );

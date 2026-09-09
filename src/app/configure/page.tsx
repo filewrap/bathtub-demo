@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Configurator } from "@/components/configurator/Configurator";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export const metadata: Metadata = {
   title: "Configure",
@@ -9,13 +10,16 @@ export const metadata: Metadata = {
 export default function ConfigurePage() {
   return (
     <section className="container-content py-16 md:py-24">
-      <header className="max-w-2xl">
-        <h1 className="text-4xl md:text-5xl">Configure</h1>
-        <p className="mt-6 text-lg text-ink-muted">
-          Tell us how deep you plan to go. We won&apos;t ask why.
-        </p>
-      </header>
-      <div className="mt-12">
+      <PageHeader
+        eyebrow="Configurator"
+        title="Tell us how deep you plan to go."
+        lede={
+          <>
+            We won&apos;t ask why. Six choices, one tub, a running estimate of how much water you are about to disappear into.
+          </>
+        }
+      />
+      <div className="mt-14 md:mt-20">
         <Configurator />
       </div>
     </section>

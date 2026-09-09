@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Cookie } from "lucide-react";
+import { button } from "@/components/ui/button";
 import { useConsent } from "./ConsentProvider";
 
 /**
@@ -22,7 +23,7 @@ export function ConsentBanner() {
       className="fixed inset-x-0 bottom-0 z-30 p-3 sm:p-4"
     >
       <div className="container-content">
-        <div className="flex flex-col gap-4 rounded-lg border border-line bg-surface-raised p-4 shadow-lift sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+        <div className="card flex flex-col gap-4 bg-surface-raised p-4 shadow-lift sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-5">
           <div className="flex items-start gap-3">
             <span
               aria-hidden="true"
@@ -44,18 +45,10 @@ export function ConsentBanner() {
           </div>
 
           <div className="flex shrink-0 gap-2">
-            <button
-              type="button"
-              onClick={() => setChoice("reject")}
-              className="inline-flex h-tap items-center rounded-md border border-line bg-surface px-4 text-sm text-ink-muted transition-colors duration-base ease-gravity hover:border-line-strong hover:text-ink"
-            >
+            <button type="button" onClick={() => setChoice("reject")} className={button("secondary")}>
               No crumbs
             </button>
-            <button
-              type="button"
-              onClick={() => setChoice("accept")}
-              className="inline-flex h-tap items-center rounded-md bg-accent px-4 text-sm font-medium text-accent-ink shadow-glow transition-transform duration-base ease-gravity hover:-translate-y-px"
-            >
+            <button type="button" onClick={() => setChoice("accept")} className={button("primary")}>
               Accept the crumbs
             </button>
           </div>

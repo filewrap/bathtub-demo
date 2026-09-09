@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { HERO_MEDIA } from "@/lib/media-manifest";
+import { button } from "@/components/ui/button";
 import { HeroMediaController } from "./HeroMediaController";
 
 /**
@@ -15,12 +16,12 @@ export function HeaderHero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative isolate overflow-hidden border-b border-line bg-void"
+      className="starfield relative isolate overflow-hidden border-b border-line bg-void"
     >
       {/* Reserved media box. Height is locked by aspect ratio on wide screens
           and by min-height on narrow ones, so media never shifts layout. */}
       <div
-        className="relative min-h-[36rem] w-full md:min-h-0"
+        className="relative min-h-[40rem] w-full md:min-h-[36rem]"
         style={{ aspectRatio: `${width} / ${height}` }}
       >
         <HeroMediaController />
@@ -28,44 +29,48 @@ export function HeaderHero() {
         {/* Scrim: guarantees legibility over 3D, video, or poster. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-void via-void/80 to-void/30 md:via-void/70 md:to-void/10"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-void via-void/85 to-void/20 md:via-void/70 md:to-void/0"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-void to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-void via-void/60 to-transparent"
         />
 
-        <div className="container-content pointer-events-none absolute inset-0 flex items-center">
-          <div className="pointer-events-auto max-w-2xl py-16">
-            <p className="text-sm uppercase tracking-[0.2em] text-accent">
-              NYX Atlas
-            </p>
-            <h1
-              id="hero-heading"
-              className="mt-4 text-5xl text-ink md:text-6xl"
-            >
-              Sink until the day forgets you.
+        <div className="container-content pointer-events-none absolute inset-0 flex items-end pb-16 md:items-center md:pb-0">
+          <div className="pointer-events-auto max-w-3xl">
+            <p className="eyebrow">Hand-built tubs</p>
+            <h1 id="hero-heading" className="mt-6 text-6xl text-ink md:text-7xl">
+              Sink until the day{" "}
+              <em className="display-italic text-accent">forgets you.</em>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-ink-muted md:text-xl">
+            <p className="mt-8 max-w-xl text-lg text-ink-muted md:text-xl">
               Hand-built tubs for people who have decided that standing up is
               overrated.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
-              <Link
-                href="/configure"
-                className="inline-flex h-tap items-center gap-2 rounded-md bg-accent px-6 text-sm font-medium text-accent-ink shadow-glow transition-transform duration-base ease-gravity hover:-translate-y-px"
-              >
+              <Link href="/configure" className={button("primary", "lg")}>
                 Build your tub
-                <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
+                <ArrowRight size={18} strokeWidth={2} aria-hidden="true" />
               </Link>
               <Link
                 href="/gallery"
-                className="inline-flex h-tap items-center rounded-md border border-line-strong bg-void/40 px-6 text-sm text-ink transition-colors duration-base ease-gravity hover:border-accent hover:text-accent"
+                className={button("secondary", "lg", "bg-void/40 backdrop-blur")}
               >
                 See the range
               </Link>
             </div>
           </div>
+        </div>
+
+        {/* Hairline scroll cue, bottom-right, desktop only. */}
+        <div
+          aria-hidden="true"
+          className="container-content pointer-events-none absolute inset-x-0 bottom-8 hidden justify-end md:flex"
+        >
+          <span className="flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-ink-faint">
+            Scroll
+            <span className="block h-px w-12 bg-line-strong" />
+          </span>
         </div>
       </div>
     </section>
