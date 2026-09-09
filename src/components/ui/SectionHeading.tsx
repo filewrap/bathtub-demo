@@ -2,9 +2,6 @@ import type { ReactNode } from "react";
 
 type Props = {
   id: string;
-  eyebrow: string;
-  /** Two-digit section index shown before the eyebrow, e.g. "02". */
-  index?: string;
   title: ReactNode;
   lede?: ReactNode;
   align?: "start" | "center";
@@ -14,38 +11,25 @@ type Props = {
 };
 
 /**
- * Section header used by every Home section. Eyebrow carries brass; the
- * title carries scale; the lede carries voice.
+ * Section header. The title carries scale, the lede carries voice. No
+ * kicker, no numbering: brass is reserved for the terminal period.
  */
-export function SectionHeading({
-  id,
-  eyebrow,
-  index,
-  title,
-  lede,
-  align = "start",
-  action,
-  className = "",
-}: Props) {
+export function SectionHeading({ id, title, lede, align = "start", action, className = "" }: Props) {
   const centered = align === "center";
   return (
     <div
       className={[
         centered
-          ? "mx-auto flex max-w-2xl flex-col items-center text-center"
-          : "flex flex-wrap items-end justify-between gap-x-10 gap-y-6",
+          ? "mx-auto flex max-w-3xl flex-col items-center text-center"
+          : "flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-12",
         className,
       ].join(" ")}
     >
-      <div className={centered ? "" : "max-w-2xl"}>
-        <p className={["eyebrow", centered ? "eyebrow-plain" : ""].join(" ")}>
-          {index ? <span className="text-ink-faint">{index}</span> : null}
-          {eyebrow}
-        </p>
-        <h2 id={id} className="mt-5 text-4xl md:text-5xl">
+      <div className={centered ? "" : "max-w-3xl"}>
+        <h2 id={id} className="text-4xl md:text-5xl">
           {title}
         </h2>
-        {lede ? <p className="mt-5 max-w-xl text-lg text-ink-muted">{lede}</p> : null}
+        {lede ? <p className="mt-6 max-w-xl text-lg text-ink-muted">{lede}</p> : null}
       </div>
       {!centered && action ? <div className="shrink-0">{action}</div> : null}
     </div>

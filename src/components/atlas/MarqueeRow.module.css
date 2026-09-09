@@ -2,22 +2,15 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  /* Soft edges so names emerge from and sink into the void. */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    black 12%,
-    black 88%,
-    transparent
-  );
+  -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
   mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
 }
 
 .track {
   display: flex;
   width: max-content;
-  gap: var(--space-10);
-  padding-inline-end: var(--space-10);
+  gap: var(--space-16);
+  padding-inline-end: var(--space-16);
   will-change: transform;
   animation-name: drift;
   animation-timing-function: linear;
@@ -32,26 +25,25 @@
 .copy {
   display: flex;
   flex: none;
-  gap: var(--space-10);
+  gap: var(--space-16);
   align-items: center;
 }
 
 .name {
   white-space: nowrap;
   font-family: var(--font-display);
-  font-size: var(--text-xl);
-  letter-spacing: 0.01em;
-  color: rgb(var(--color-ink-muted));
-  transition: color var(--motion-base) var(--ease-gravity);
+  font-size: var(--text-2xl);
+  letter-spacing: 0.02em;
+  color: rgb(var(--color-ink-faint));
+  transition: color var(--motion-base) var(--ease-out);
 }
 
 @media (min-width: 768px) {
   .name {
-    font-size: var(--text-2xl);
+    font-size: var(--text-3xl);
   }
 }
 
-/* Pause while the visitor points at or focuses within the row. */
 @media (hover: hover) {
   .row:hover .track {
     animation-play-state: paused;
@@ -64,8 +56,6 @@
   animation-play-state: paused;
 }
 
-/* The track is two identical copies; moving by exactly one copy loops
-   without a visible seam. */
 @keyframes drift {
   from {
     transform: translate3d(0, 0, 0);
@@ -75,8 +65,6 @@
   }
 }
 
-/* Reduced motion: no auto-scroll. Present the names as a static wrapped
-   list, hide the duplicate copy, drop the edge mask so nothing is cut. */
 @media (prefers-reduced-motion: reduce) {
   .row {
     -webkit-mask-image: none;
@@ -91,7 +79,7 @@
     flex-wrap: wrap;
     justify-content: center;
     row-gap: var(--space-3);
-    column-gap: var(--space-6);
+    column-gap: var(--space-8);
   }
   .duplicate {
     display: none;

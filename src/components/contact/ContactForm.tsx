@@ -7,6 +7,7 @@ import { button } from "@/components/ui/button";
 import { EnquiryConfigSummary } from "./EnquiryConfigSummary";
 import {
   hasErrors,
+  LIMITS,
   MESSAGES,
   newSubmissionToken,
   validate,
@@ -45,7 +46,6 @@ export function ContactForm() {
 
   const setField = (field: ContactField, value: string) => {
     setValues((v) => ({ ...v, [field]: value }));
-    // Clear a flagged field once the visitor corrects it (AC-NYX-CP-002.4).
     if (errors[field]) {
       const next = validate({ ...values, [field]: value });
       if (!next[field]) {
@@ -110,7 +110,6 @@ export function ContactForm() {
         setServerMessage(MESSAGES.sendFailed);
       }
       setStatus("failed");
-      // Same token on retry so a late-arriving first attempt is deduped.
     } catch {
       setServerMessage(MESSAGES.sendFailed);
       setStatus("failed");
@@ -122,9 +121,9 @@ export function ContactForm() {
   if (status === "sent") {
     return (
       <div role="status" className="card max-w-2xl border-accent/40 p-8 shadow-glow md:p-12">
-        <p className="eyebrow">Received</p>
-        <h2 className="mt-5 text-4xl">
-          Somewhere in the dark, a lamp came <em className="display-italic">on.</em>
+        <p className="label">Received</p>
+        <h2 className="mt-4 text-4xl text-ink">
+          Somewhere in the dark, a lamp came on<span className="text-accent">.</span>
         </h2>
         <p className="mt-5 text-lg text-ink-muted">
           We answer between dusk and the hour no one admits to being awake. Yours is in the queue.
@@ -138,7 +137,7 @@ export function ContactForm() {
             tokenRef.current = newSubmissionToken();
             setStatus("idle");
           }}
-          className={button("ghost", "md", "mt-8 -ml-4")}
+          className={button("secondary", "md", "mt-8")}
         >
           Send another
         </button>
@@ -147,16 +146,16 @@ export function ContactForm() {
   }
 
   const sending = status === "sending";
+  const remaining = LIMITS.message - values.message.length;
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start lg:gap-16">
-      <form onSubmit={onSubmit} noValidate aria-describedby={`${baseId}-hours`} className="grid max-w-2xl gap-6">
-        <p id={`${baseId}-hours`} className="text-sm text-ink-muted">
-          <span className="eyebrow eyebrow-plain mr-3">Hours</span>
-          We answer between dusk and the hour no one admits to being awake.
+    <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:items-start lg:gap-16">
+      <form onSubmit={onSubmit} noValidate aria-describedby={`${baseId}-hours`} className="grid max-w-2xl gap-7">
+        <p id={`${baseId}-hours`} className="label">
+          Hours: dusk to the hour no one admits to being awake
         </p>
 
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-7 sm:grid-cols-2">
           <Field
             id={`${baseId}-name`}
             label="Name"
@@ -186,12 +185,11 @@ export function ContactForm() {
           value={values.message}
           onChange={(v) => setField("message", v)}
           disabled={sending}
+          hint={remaining < 400 ? `${remaining} characters left` : undefined}
         />
 
         <div className="min-h-[1.5rem]" aria-live="polite">
-          {status === "failed" && serverMessage ? (
-            <p className="text-sm text-accent">{serverMessage}</p>
-          ) : null}
+          {status === "failed" && serverMessage ? <p className="text-sm text-accent">{serverMessage}</p> : null}
         </div>
 
         <button
@@ -227,6 +225,7 @@ type FieldProps = {
   value: string;
   onChange: (value: string) => void;
   error?: string;
+  hint?: string;
   type?: string;
   multiline?: boolean;
   autoComplete?: string;
@@ -240,6 +239,7 @@ function Field({
   value,
   onChange,
   error,
+  hint,
   type = "text",
   multiline = false,
   autoComplete,
@@ -248,12 +248,12 @@ function Field({
 }: FieldProps) {
   const errorId = `${id}-error`;
   const base =
-    "w-full rounded-md border bg-surface px-4 text-base text-ink placeholder:text-ink-faint transition-[border-color,box-shadow] duration-base ease-gravity focus-visible:border-accent focus-visible:shadow-glow focus-visible:outline-none disabled:opacity-60";
-  const border = error ? "border-accent" : "border-line hover:border-line-strong";
+    "w-full rounded-lg border bg-surface px-4 text-base text-ink placeholder:text-ink-faint transition-[border-color,box-shadow] duration-base ease-out focus-visible:border-accent focus-visible:shadow-glow focus-visible:outline-none disabled:opacity-60";
+  const border = error ? "border-danger" : "border-line hover:border-line-strong";
 
   return (
-    <div className="grid gap-2">
-      <label htmlFor={id} className="text-xs uppercase tracking-[0.18em] text-ink-muted">
+    <div className="grid min-w-0 gap-2">
+      <label htmlFor={id} className="label text-ink-muted">
         {label}
       </label>
       {multiline ? (
@@ -280,12 +280,13 @@ function Field({
           aria-invalid={Boolean(error) || undefined}
           aria-describedby={error ? errorId : undefined}
           disabled={disabled}
-          className={`${base} ${border} h-[3.25rem]`}
+          className={`${base} ${border} h-[3.5rem]`}
         />
       )}
-      <p id={errorId} role="alert" className="min-h-[1.25rem] text-xs text-accent">
+      <p id={errorId} role="alert" className="min-h-[1.25rem] text-xs text-danger">
         {error ?? ""}
       </p>
+      {!error && hint ? <p className="spec -mt-1 text-xs text-ink-faint">{hint}</p> : null}
     </div>
   );
 }

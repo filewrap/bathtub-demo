@@ -1,37 +1,27 @@
 "use client";
 
 import { X } from "lucide-react";
+import { iconButton } from "@/components/ui/button";
 
 type Props = {
   summary: string;
   onRemove: () => void;
 };
 
-/**
- * Carried configuration from the Enquiry Handoff (AC-NYX-CP-003.1, 003.4).
- */
+/** Carried configuration from the Enquiry Handoff (AC-NYX-CP-003.1, 003.4). */
 export function EnquiryConfigSummary({ summary, onRemove }: Props) {
   const lines = summary.split("\n").filter(Boolean);
   return (
-    <aside
-      aria-labelledby="enquiry-config-heading"
-      className="card border-accent/40 p-6 shadow-glow"
-    >
+    <aside aria-labelledby="enquiry-config-heading" className="card border-accent/40 p-6 shadow-glow">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="eyebrow eyebrow-plain">Attached</p>
-          <h2 id="enquiry-config-heading" className="mt-3 text-2xl">
+          <p className="label">Attached</p>
+          <h2 id="enquiry-config-heading" className="mt-2 text-2xl text-ink">
             The tub you built
           </h2>
-          <p className="mt-2 text-sm text-ink-muted">You will not have to describe it.</p>
         </div>
-        <button
-          type="button"
-          onClick={onRemove}
-          aria-label="Remove configuration from enquiry"
-          className="inline-flex h-tap w-tap shrink-0 items-center justify-center rounded-md border border-line text-ink-muted transition-colors duration-base ease-gravity hover:border-line-strong hover:text-ink"
-        >
-          <X size={18} strokeWidth={1.75} aria-hidden="true" />
+        <button type="button" onClick={onRemove} aria-label="Remove configuration from enquiry" className={iconButton}>
+          <X size={18} strokeWidth={1.5} aria-hidden="true" />
         </button>
       </div>
       <ul className="mt-5 divide-y divide-line text-sm">
@@ -50,7 +40,7 @@ export function EnquiryConfigSummary({ summary, onRemove }: Props) {
       <button
         type="button"
         onClick={onRemove}
-        className="mt-5 text-xs text-ink-faint underline-offset-4 transition-colors duration-base ease-gravity hover:text-ink hover:underline"
+        className="mt-5 text-xs text-ink-faint underline-offset-4 transition-colors duration-base ease-out hover:text-ink hover:underline"
       >
         Send without the tub
       </button>

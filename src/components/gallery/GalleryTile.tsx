@@ -19,7 +19,8 @@ type LoadState = "idle" | "loading" | "loaded" | "failed";
  * One grid tile. Reserves its final aspect box before load
  * (AC-NYX-MG-001.3), starts loading as it approaches the viewport
  * (001.4), marks video with a play indicator (001.2), and swaps to a
- * placeholder on failure (001.6).
+ * placeholder on failure (001.6). Caption and dimensions surface on hover
+ * and focus.
  */
 export function GalleryTile({ item, index, eager = false, onOpen, buttonRef }: Props) {
   const localRef = useRef<HTMLButtonElement>(null);
@@ -56,7 +57,7 @@ export function GalleryTile({ item, index, eager = false, onOpen, buttonRef }: P
       onClick={(e) => onOpen(index, e.currentTarget)}
       aria-label={label}
       data-state={state}
-      className="group relative block w-full overflow-hidden rounded-lg border border-line bg-surface-raised text-left shadow-soft transition-transform duration-base ease-gravity hover:-translate-y-0.5 focus-visible:-translate-y-0.5"
+      className="group card relative block w-full min-w-0 overflow-hidden text-left transition-[transform,border-color,box-shadow] duration-slow ease-out hover:-translate-y-1 hover:border-line-strong hover:shadow-lift focus-visible:-translate-y-1"
       style={{ aspectRatio: `${item.width} / ${item.height}` }}
     >
       {state === "failed" ? (
@@ -68,16 +69,15 @@ export function GalleryTile({ item, index, eager = false, onOpen, buttonRef }: P
         </div>
       ) : (
         <>
-          {/* Placeholder occupies the final dimensions until loaded. */}
           <div
             aria-hidden="true"
             className={[
-              "absolute inset-0 bg-gradient-to-br from-surface-raised to-surface-overlay transition-opacity duration-slow ease-gravity",
+              "stage absolute inset-0 transition-opacity duration-slow ease-out",
               state === "loaded" ? "opacity-0" : "opacity-100",
             ].join(" ")}
           />
           {state !== "idle" ? (
-            // eslint-disable-next-line @next/next/no-img-element -- manifest-driven placeholder assets
+            // eslint-disable-next-line @next/next/no-img-element -- manifest-driven scene assets
             <img
               src={item.poster}
               width={item.width}
@@ -88,7 +88,7 @@ export function GalleryTile({ item, index, eager = false, onOpen, buttonRef }: P
               onLoad={() => setState("loaded")}
               onError={() => setState("failed")}
               className={[
-                "absolute inset-0 h-full w-full object-cover transition-opacity duration-slow ease-gravity",
+                "absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-drift ease-out group-hover:scale-[1.04]",
                 state === "loaded" ? "opacity-100" : "opacity-0",
               ].join(" ")}
             />
@@ -96,10 +96,19 @@ export function GalleryTile({ item, index, eager = false, onOpen, buttonRef }: P
         </>
       )}
 
+      {state !== "failed" ? (
+        <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-void/90 to-transparent p-4 pt-12 opacity-0 transition-opacity duration-slow ease-out group-hover:opacity-100 group-focus-visible:opacity-100">
+          <span className="label min-w-0 truncate text-ink">{item.caption}</span>
+          <span className="spec shrink-0 text-xs text-ink-faint">
+            {item.width} x {item.height}
+          </span>
+        </span>
+      ) : null}
+
       {item.type === "video" && state !== "failed" ? (
         <span
           aria-hidden="true"
-          className="absolute bottom-3 left-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-void/80 text-accent shadow-glow backdrop-blur"
+          className="absolute left-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-void/80 text-accent shadow-glow backdrop-blur"
         >
           <Play size={16} strokeWidth={2} className="ml-0.5" />
         </span>

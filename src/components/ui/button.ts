@@ -1,15 +1,15 @@
 /**
  * Button recipe. One source for every call to action so radii, heights,
  * hover lift, pressed state, and disabled state stay identical across the
- * site. Use with <button> or <Link>.
+ * site. Use with <button> or <Link>. Text never wraps to two lines.
  */
 export type ButtonVariant = "primary" | "secondary" | "ghost";
-export type ButtonSize = "md" | "lg";
+export type ButtonSize = "sm" | "md" | "lg";
 
 const BASE =
-  "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium " +
-  "transition-[transform,color,background-color,border-color,box-shadow] duration-base ease-gravity " +
-  "active:translate-y-0 disabled:pointer-events-none disabled:opacity-60";
+  "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium " +
+  "transition-[transform,color,background-color,border-color,box-shadow] duration-base ease-out " +
+  "active:translate-y-0 disabled:pointer-events-none disabled:opacity-50";
 
 const VARIANT: Record<ButtonVariant, string> = {
   primary: "bg-accent text-accent-ink shadow-glow hover:-translate-y-px",
@@ -19,8 +19,9 @@ const VARIANT: Record<ButtonVariant, string> = {
 };
 
 const SIZE: Record<ButtonSize, string> = {
-  md: "h-tap px-5 text-sm",
-  lg: "h-[3.25rem] px-7 text-base",
+  sm: "h-9 px-4 text-xs",
+  md: "h-tap px-6 text-sm",
+  lg: "h-[3.5rem] px-8 text-base",
 };
 
 export function button(
@@ -30,3 +31,8 @@ export function button(
 ): string {
   return [BASE, VARIANT[variant], SIZE[size], extra].filter(Boolean).join(" ");
 }
+
+/** Square icon button, same voice as `secondary`. */
+export const iconButton =
+  "inline-flex h-tap w-tap shrink-0 items-center justify-center rounded-full border border-line text-ink-muted " +
+  "transition-[color,border-color,background-color] duration-base ease-out hover:border-line-strong hover:text-ink";

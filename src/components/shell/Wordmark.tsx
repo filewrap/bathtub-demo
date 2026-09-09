@@ -6,16 +6,13 @@ export function Wordmark({ className = "" }: { className?: string }) {
       href="/"
       aria-label="NYX Atlas, home"
       className={[
-        "inline-flex h-tap items-center gap-2 rounded-sm font-display text-xl tracking-tight text-ink",
+        "inline-flex h-tap items-center gap-3 rounded-sm font-display text-xl tracking-[0.08em] text-ink",
         className,
       ].join(" ")}
     >
-      <span
-        aria-hidden="true"
-        className="inline-block h-2 w-2 rounded-full bg-accent shadow-glow"
-      />
+      <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-accent shadow-glow" />
       <span>
-        NYX <span className="text-ink-muted">Atlas</span>
+        NYX <span className="text-ink-muted">ATLAS</span>
       </span>
     </Link>
   );

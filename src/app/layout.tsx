@@ -1,26 +1,30 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Bodoni_Moda, JetBrains_Mono, Manrope } from "next/font/google";
 import type { ReactNode } from "react";
 import { AppShell } from "@/components/shell/AppShell";
 import { ThemeScript } from "@/components/theme/ThemeScript";
 import "./globals.css";
 
 /**
- * Display: Fraunces, a soft-serif with optical sizing and a wonky italic.
- * Body: Inter. Both self-hosted by next/font, exposed as CSS variables that
- * tokens.css consumes via --font-display / --font-body.
+ * Display: Bodoni Moda, a high-contrast serif with optical sizing.
+ * Body: Manrope. Specs and labels: JetBrains Mono. All self-hosted by
+ * next/font and exposed as CSS variables consumed by tokens.css.
  */
-const fraunces = Fraunces({
+const bodoni = Bodoni_Moda({
   subsets: ["latin"],
-  style: ["normal", "italic"],
-  axes: ["opsz", "SOFT", "WONK"],
-  variable: "--font-fraunces",
+  variable: "--font-bodoni",
   display: "swap",
 });
 
-const inter = Inter({
+const manrope = Manrope({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
   display: "swap",
 });
 
@@ -48,7 +52,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       lang="en"
       data-theme="dark"
       suppressHydrationWarning
-      className={`${fraunces.variable} ${inter.variable}`}
+      className={`${bodoni.variable} ${manrope.variable} ${jetbrains.variable}`}
     >
       <head>
         <ThemeScript />
