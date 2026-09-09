@@ -3,6 +3,7 @@
 import { Loader2, Send } from "lucide-react";
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { clearEnquiryHandoff, readEnquiryHandoff } from "@/components/configurator/enquiry-handoff";
+import { button } from "@/components/ui/button";
 import { EnquiryConfigSummary } from "./EnquiryConfigSummary";
 import {
   hasErrors,
@@ -120,12 +121,12 @@ export function ContactForm() {
 
   if (status === "sent") {
     return (
-      <div
-        role="status"
-        className="rounded-lg border border-accent/40 bg-surface p-8 shadow-glow"
-      >
-        <h2 className="font-display text-2xl text-ink">Received. Somewhere in the dark, a lamp came on.</h2>
-        <p className="mt-3 text-ink-muted">
+      <div role="status" className="card max-w-2xl border-accent/40 p-8 shadow-glow md:p-12">
+        <p className="eyebrow">Received</p>
+        <h2 className="mt-5 text-4xl">
+          Somewhere in the dark, a lamp came <em className="display-italic">on.</em>
+        </h2>
+        <p className="mt-5 text-lg text-ink-muted">
           We answer between dusk and the hour no one admits to being awake. Yours is in the queue.
         </p>
         <button
@@ -137,7 +138,7 @@ export function ContactForm() {
             tokenRef.current = newSubmissionToken();
             setStatus("idle");
           }}
-          className="mt-6 text-sm text-ink-muted underline-offset-4 hover:text-ink hover:underline"
+          className={button("ghost", "md", "mt-8 -ml-4")}
         >
           Send another
         </button>
@@ -148,32 +149,35 @@ export function ContactForm() {
   const sending = status === "sending";
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1fr_20rem] lg:items-start">
-      <form onSubmit={onSubmit} noValidate aria-describedby={`${baseId}-hours`} className="grid gap-5">
+    <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start lg:gap-16">
+      <form onSubmit={onSubmit} noValidate aria-describedby={`${baseId}-hours`} className="grid max-w-2xl gap-6">
         <p id={`${baseId}-hours`} className="text-sm text-ink-muted">
+          <span className="eyebrow eyebrow-plain mr-3">Hours</span>
           We answer between dusk and the hour no one admits to being awake.
         </p>
 
-        <Field
-          id={`${baseId}-name`}
-          label="Name"
-          error={errors.name}
-          value={values.name}
-          onChange={(v) => setField("name", v)}
-          autoComplete="name"
-          disabled={sending}
-        />
-        <Field
-          id={`${baseId}-email`}
-          label="Email"
-          type="email"
-          error={errors.email}
-          value={values.email}
-          onChange={(v) => setField("email", v)}
-          autoComplete="email"
-          inputMode="email"
-          disabled={sending}
-        />
+        <div className="grid gap-6 sm:grid-cols-2">
+          <Field
+            id={`${baseId}-name`}
+            label="Name"
+            error={errors.name}
+            value={values.name}
+            onChange={(v) => setField("name", v)}
+            autoComplete="name"
+            disabled={sending}
+          />
+          <Field
+            id={`${baseId}-email`}
+            label="Email"
+            type="email"
+            error={errors.email}
+            value={values.email}
+            onChange={(v) => setField("email", v)}
+            autoComplete="email"
+            inputMode="email"
+            disabled={sending}
+          />
+        </div>
         <Field
           id={`${baseId}-message`}
           label="Message"
@@ -194,16 +198,16 @@ export function ContactForm() {
           type="submit"
           disabled={sending}
           aria-busy={sending}
-          className="inline-flex h-tap items-center justify-center gap-2 rounded-md bg-accent px-6 text-sm font-medium text-accent-ink shadow-glow transition-transform duration-base ease-gravity hover:-translate-y-px disabled:cursor-wait disabled:opacity-70 disabled:hover:translate-y-0 sm:justify-self-start"
+          className={button("primary", "lg", "sm:justify-self-start disabled:cursor-wait")}
         >
           {sending ? (
             <>
-              <Loader2 size={16} strokeWidth={2} className="animate-spin" aria-hidden="true" />
+              <Loader2 size={18} strokeWidth={2} className="animate-spin" aria-hidden="true" />
               Sinking it through
             </>
           ) : (
             <>
-              <Send size={16} strokeWidth={2} aria-hidden="true" />
+              <Send size={18} strokeWidth={2} aria-hidden="true" />
               Send it into the dark
             </>
           )}
@@ -244,12 +248,12 @@ function Field({
 }: FieldProps) {
   const errorId = `${id}-error`;
   const base =
-    "w-full rounded-md border bg-surface px-4 text-ink placeholder:text-ink-faint transition-colors duration-base ease-gravity focus-visible:border-accent disabled:opacity-60";
+    "w-full rounded-md border bg-surface px-4 text-base text-ink placeholder:text-ink-faint transition-[border-color,box-shadow] duration-base ease-gravity focus-visible:border-accent focus-visible:shadow-glow focus-visible:outline-none disabled:opacity-60";
   const border = error ? "border-accent" : "border-line hover:border-line-strong";
 
   return (
-    <div className="grid gap-1.5">
-      <label htmlFor={id} className="text-sm text-ink-muted">
+    <div className="grid gap-2">
+      <label htmlFor={id} className="text-xs uppercase tracking-[0.18em] text-ink-muted">
         {label}
       </label>
       {multiline ? (
@@ -262,7 +266,7 @@ function Field({
           aria-invalid={Boolean(error) || undefined}
           aria-describedby={error ? errorId : undefined}
           disabled={disabled}
-          className={`${base} ${border} min-h-[9rem] py-3`}
+          className={`${base} ${border} min-h-[10rem] py-3`}
         />
       ) : (
         <input
@@ -276,7 +280,7 @@ function Field({
           aria-invalid={Boolean(error) || undefined}
           aria-describedby={error ? errorId : undefined}
           disabled={disabled}
-          className={`${base} ${border} h-tap`}
+          className={`${base} ${border} h-[3.25rem]`}
         />
       )}
       <p id={errorId} role="alert" className="min-h-[1.25rem] text-xs text-accent">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ConsentControls } from "@/components/consent/ConsentControls";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -15,15 +16,14 @@ const PRIVACY_EMAIL = "privacy@nyxatlas.example";
  */
 export default function PrivacyPage() {
   return (
-    <article className="container-content max-w-3xl py-20 md:py-32">
-      <header>
-        <h1 className="text-4xl md:text-5xl">Privacy Policy</h1>
-        <p className="mt-6 text-lg text-ink-muted">
-          Your secrets soak with you. We keep nothing we don&apos;t have to.
-        </p>
-      </header>
+    <article className="container-content py-16 md:py-24">
+      <PageHeader
+        eyebrow="Privacy"
+        title="Privacy Policy"
+        lede="Your secrets soak with you. We keep nothing we don't have to."
+      />
 
-      <div className="mt-16 space-y-14 text-base text-ink-muted [&_h2]:text-2xl [&_h2]:text-ink [&_p]:mt-4 [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6">
+      <div className="mt-16 max-w-2xl space-y-14 text-lg text-ink-muted [&_h2]:text-3xl [&_h2]:text-ink [&_p]:mt-5 [&_ul]:mt-5 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6 md:mt-20">
         <section aria-labelledby="collected">
           <h2 id="collected">What we collect</h2>
           <p>
@@ -62,17 +62,17 @@ export default function PrivacyPage() {
         <section aria-labelledby="cookies">
           <h2 id="cookies">Cookies and similar things</h2>
           <p>
-            <strong className="text-ink">Essential storage</strong> runs
+            <strong className="font-medium text-ink">Essential storage</strong> runs
             regardless of your choice. It holds your theme and your cookie
             decision, and nothing else. It is not used to identify you.
           </p>
           <p>
-            <strong className="text-ink">Non-essential cookies</strong> are
+            <strong className="font-medium text-ink">Non-essential cookies</strong> are
             for analytics: which pages get visited, roughly how long people
             linger. They stay switched off until you accept them, and they
             switch back off the moment you change your mind.
           </p>
-          <div className="mt-6">
+          <div className="mt-8">
             <ConsentControls />
           </div>
         </section>

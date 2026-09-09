@@ -15,14 +15,15 @@ export function EnquiryConfigSummary({ summary, onRemove }: Props) {
   return (
     <aside
       aria-labelledby="enquiry-config-heading"
-      className="rounded-lg border border-accent/40 bg-surface p-5 shadow-glow"
+      className="card border-accent/40 p-6 shadow-glow"
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 id="enquiry-config-heading" className="font-display text-xl text-ink">
+          <p className="eyebrow eyebrow-plain">Attached</p>
+          <h2 id="enquiry-config-heading" className="mt-3 text-2xl">
             The tub you built
           </h2>
-          <p className="mt-1 text-sm text-ink-muted">Attached to your message. You will not have to describe it.</p>
+          <p className="mt-2 text-sm text-ink-muted">You will not have to describe it.</p>
         </div>
         <button
           type="button"
@@ -33,13 +34,13 @@ export function EnquiryConfigSummary({ summary, onRemove }: Props) {
           <X size={18} strokeWidth={1.75} aria-hidden="true" />
         </button>
       </div>
-      <ul className="mt-4 divide-y divide-line text-sm">
+      <ul className="mt-5 divide-y divide-line text-sm">
         {lines.map((line) => {
           const idx = line.indexOf(":");
           const label = idx > -1 ? line.slice(0, idx) : "";
           const value = idx > -1 ? line.slice(idx + 1).trim() : line;
           return (
-            <li key={line} className="flex items-baseline justify-between gap-4 py-2">
+            <li key={line} className="flex items-baseline justify-between gap-4 py-2.5">
               {label ? <span className="text-ink-muted">{label}</span> : null}
               <span className="text-right text-ink">{value}</span>
             </li>
@@ -49,7 +50,7 @@ export function EnquiryConfigSummary({ summary, onRemove }: Props) {
       <button
         type="button"
         onClick={onRemove}
-        className="mt-4 text-xs text-ink-faint underline-offset-4 transition-colors duration-base ease-gravity hover:text-ink hover:underline"
+        className="mt-5 text-xs text-ink-faint underline-offset-4 transition-colors duration-base ease-gravity hover:text-ink hover:underline"
       >
         Send without the tub
       </button>

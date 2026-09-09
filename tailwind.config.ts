@@ -63,8 +63,9 @@ const config: Config = {
       "2xl": ["var(--text-2xl)", { lineHeight: "var(--leading-snug)" }],
       "3xl": ["var(--text-3xl)", { lineHeight: "var(--leading-tight)" }],
       "4xl": ["var(--text-4xl)", { lineHeight: "var(--leading-tight)" }],
-      "5xl": ["var(--text-5xl)", { lineHeight: "var(--leading-none)" }],
+      "5xl": ["var(--text-5xl)", { lineHeight: "1.02" }],
       "6xl": ["var(--text-6xl)", { lineHeight: "var(--leading-none)" }],
+      "7xl": ["var(--text-7xl)", { lineHeight: "0.96" }],
     },
     spacing: {
       0: "0",
