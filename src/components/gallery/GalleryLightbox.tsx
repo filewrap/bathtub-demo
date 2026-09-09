@@ -3,6 +3,7 @@
 import { ChevronLeft, ChevronRight, Pause, Play, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { GalleryItem } from "@/lib/media-manifest";
+import { iconButton } from "@/components/ui/button";
 
 type Props = {
   items: GalleryItem[];
@@ -41,28 +42,25 @@ export function GalleryLightbox({ items, index, onChange, onClose }: Props) {
     onChange((index + 1) % count);
   }, [index, count, onChange]);
 
-  // Open/close the native dialog in step with `index`.
   useEffect(() => {
     const d = dialogRef.current;
     if (!d) return;
     if (open && !d.open) {
       d.showModal();
-      document.documentElement.style.overflow = "hidden";
+      document.documentElement.classList.add("no-scroll");
     } else if (!open && d.open) {
       d.close();
     }
     return () => {
-      document.documentElement.style.overflow = "";
+      document.documentElement.classList.remove("no-scroll");
     };
   }, [open]);
 
-  // Reset video state when the item changes.
   useEffect(() => {
     setPlaying(false);
     setVideoFailed(false);
   }, [index]);
 
-  // Keyboard: arrows to page, Tab to cycle within the dialog.
   useEffect(() => {
     if (!open) return;
     const d = dialogRef.current;
@@ -113,24 +111,18 @@ export function GalleryLightbox({ items, index, onChange, onClose }: Props) {
       }}
       onClose={onClose}
       onClick={(e) => {
-        // Backdrop click closes; clicks inside the panel do not.
         if (e.target === e.currentTarget) onClose();
       }}
-      className="m-0 h-dvh max-h-none w-screen max-w-none bg-transparent p-0 backdrop:bg-void/90 backdrop:backdrop-blur-sm"
+      className="m-0 h-dvh max-h-none w-screen max-w-none bg-transparent p-0 text-ink backdrop:bg-void/92 backdrop:backdrop-blur-md"
     >
       {item ? (
         <div className="flex h-full w-full flex-col">
           <div className="container-content flex h-[var(--size-header)] shrink-0 items-center justify-between">
-            <p className="text-sm text-ink-muted" aria-live="polite">
-              {index! + 1} / {count}
+            <p className="spec text-sm text-ink-muted" aria-live="polite">
+              {String(index! + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
             </p>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Close viewer"
-              className="inline-flex h-tap w-tap items-center justify-center rounded-md border border-line bg-surface text-ink-muted transition-colors duration-base ease-gravity hover:border-line-strong hover:text-ink"
-            >
-              <X size={20} strokeWidth={1.75} aria-hidden="true" />
+            <button type="button" onClick={onClose} aria-label="Close viewer" className={iconButton}>
+              <X size={20} strokeWidth={1.5} aria-hidden="true" />
             </button>
           </div>
 
@@ -139,13 +131,13 @@ export function GalleryLightbox({ items, index, onChange, onClose }: Props) {
               type="button"
               onClick={prev}
               aria-label="Previous item"
-              className="absolute left-3 top-1/2 z-10 inline-flex h-tap w-tap -translate-y-1/2 items-center justify-center rounded-full border border-line bg-surface/90 text-ink-muted transition-colors duration-base ease-gravity hover:border-line-strong hover:text-ink sm:left-6"
+              className={`${iconButton} absolute left-3 top-1/2 z-10 -translate-y-1/2 bg-surface/90 sm:left-6`}
             >
-              <ChevronLeft size={22} strokeWidth={1.75} aria-hidden="true" />
+              <ChevronLeft size={22} strokeWidth={1.5} aria-hidden="true" />
             </button>
 
             <figure
-              className="relative max-h-full max-w-full overflow-hidden rounded-lg border border-line bg-surface shadow-lift"
+              className="card relative max-h-full max-w-full overflow-hidden shadow-lift"
               style={{
                 aspectRatio: `${item.width} / ${item.height}`,
                 width: "min(100%, calc((100dvh - 12rem) * " + item.width / item.height + "))",
@@ -175,7 +167,7 @@ export function GalleryLightbox({ items, index, onChange, onClose }: Props) {
                     onClick={togglePlay}
                     aria-label={playing ? "Pause video" : "Play video"}
                     aria-pressed={playing}
-                    className="absolute bottom-4 left-4 inline-flex h-tap w-tap items-center justify-center rounded-full bg-void/80 text-accent shadow-glow backdrop-blur transition-transform duration-base ease-gravity hover:-translate-y-px"
+                    className="absolute bottom-4 left-4 inline-flex h-tap w-tap items-center justify-center rounded-full bg-void/80 text-accent shadow-glow backdrop-blur transition-transform duration-base ease-out hover:-translate-y-px"
                   >
                     {playing ? (
                       <Pause size={18} strokeWidth={2} aria-hidden="true" />
@@ -185,7 +177,7 @@ export function GalleryLightbox({ items, index, onChange, onClose }: Props) {
                   </button>
                 </>
               ) : (
-                // eslint-disable-next-line @next/next/no-img-element -- manifest-driven placeholder assets
+                // eslint-disable-next-line @next/next/no-img-element -- manifest-driven scene assets
                 <img
                   key={item.id}
                   src={item.poster}
@@ -203,16 +195,19 @@ export function GalleryLightbox({ items, index, onChange, onClose }: Props) {
               type="button"
               onClick={next}
               aria-label="Next item"
-              className="absolute right-3 top-1/2 z-10 inline-flex h-tap w-tap -translate-y-1/2 items-center justify-center rounded-full border border-line bg-surface/90 text-ink-muted transition-colors duration-base ease-gravity hover:border-line-strong hover:text-ink sm:right-6"
+              className={`${iconButton} absolute right-3 top-1/2 z-10 -translate-y-1/2 bg-surface/90 sm:right-6`}
             >
-              <ChevronRight size={22} strokeWidth={1.75} aria-hidden="true" />
+              <ChevronRight size={22} strokeWidth={1.5} aria-hidden="true" />
             </button>
           </div>
 
-          <p className="container-content shrink-0 pb-6 text-center text-sm text-ink-muted">
-            {item.alt}
-            {videoFailed ? " (The video went quiet. The still remains.)" : ""}
-          </p>
+          <div className="container-content flex shrink-0 flex-col items-center gap-1 pb-8 text-center">
+            <p className="label text-ink">{item.caption}</p>
+            <p className="max-w-xl text-sm text-ink-muted">
+              {item.alt}
+              {videoFailed ? " (The video went quiet. The still remains.)" : ""}
+            </p>
+          </div>
         </div>
       ) : null}
     </dialog>

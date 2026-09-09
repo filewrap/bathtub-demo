@@ -6,11 +6,10 @@ import { button } from "@/components/ui/button";
 /** Contact call to action (AC-NYX-003.1, 003.4). */
 export function ContactCta() {
   return (
-    <section aria-labelledby="contact-cta-heading" className="reveal container-content py-24 md:py-32">
+    <section aria-labelledby="contact-cta-heading" className="reveal container-content py-24 md:py-40">
       <SectionHeading
         id="contact-cta-heading"
         align="center"
-        eyebrow="Contact"
         title="Contact us (preferably after dark)."
         lede="We answer between dusk and the hour no one admits to being awake."
       />
