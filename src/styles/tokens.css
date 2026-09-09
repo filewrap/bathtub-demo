@@ -1,0 +1,160 @@
+/*
+ * NYX Atlas design tokens.
+ *
+ * Single source of truth for the visual world (Web App blueprint, "Visual World
+ * and Craft Floor"). Palette switches on `[data-theme]` at the document root
+ * (ADR-003). Colors are stored as space-separated RGB channels so Tailwind can
+ * apply alpha modifiers (`bg-surface/60`).
+ *
+ * Components must reference tokens (directly or via Tailwind utilities) and
+ * never hardcode hex values.
+ */
+
+:root {
+  /* ---------- Typography ---------- */
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia,
+    serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+  --text-5xl: 4rem;
+  --text-6xl: 5.5rem;
+
+  --leading-none: 1;
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
+
+  /* ---------- Spacing (4px base) ---------- */
+  --space-0-5: 0.125rem;
+  --space-1: 0.25rem;
+  --space-1-5: 0.375rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Minimum touch target (craft floor: >= 44px). */
+  --size-tap: 2.75rem;
+  --size-content: 72rem;
+  --size-header: 4.5rem;
+
+  /* ---------- Radii ---------- */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 2rem;
+
+  /* ---------- Motion: slow, gravitational ---------- */
+  --motion-fast: 160ms;
+  --motion-base: 320ms;
+  --motion-slow: 640ms;
+  --motion-drift: 1200ms;
+  --ease-gravity: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-drift: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ---------- Dark theme (default) ---------- */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Void background: blue-black, never pure #000. #07080D */
+  --color-void: 7 8 13;
+  /* Layered deep indigo/violet surfaces. */
+  --color-surface: 13 15 24; /* #0D0F18 */
+  --color-surface-raised: 20 22 36; /* #141624 */
+  --color-surface-overlay: 28 30 48; /* #1C1E30 */
+
+  /* Text. Body ink on void: ~14.5:1. Muted on surface: ~7.5:1. */
+  --color-ink: 236 236 244; /* #ECECF4 */
+  --color-ink-muted: 168 170 190; /* #A8AABE */
+  --color-ink-faint: 110 113 138; /* #6E718A, decorative only */
+
+  --color-line: 38 41 62; /* #26293E */
+  --color-line-strong: 62 66 94; /* #3E425E */
+
+  /* Cosmic mid-tones. */
+  --color-cosmic-blue: 92 122 214; /* #5C7AD6 */
+  --color-cosmic-violet: 138 108 214; /* #8A6CD6 */
+  --color-cosmic-indigo: 58 62 128; /* #3A3E80 */
+
+  /* The single source of light: brass/candle. #E8B873 */
+  --color-accent: 232 184 115;
+  --color-accent-ink: 24 18 8; /* text on accent fills, ~11:1 */
+
+  --color-focus: 232 184 115;
+  --color-danger: 226 118 118;
+  --color-success: 126 196 150;
+
+  /* Depth: soft, low, diffuse. No hard drop shadows. */
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.35), 0 8px 24px -8px rgb(0 0 0 / 0.5);
+  --shadow-lift: 0 2px 6px rgb(0 0 0 / 0.4), 0 24px 48px -16px rgb(0 0 0 / 0.6);
+  --shadow-glow: 0 0 0 1px rgb(var(--color-accent) / 0.25),
+    0 0 48px -8px rgb(var(--color-accent) / 0.35);
+}
+
+/* ---------- Light theme: daylight inversion ---------- */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --color-void: 247 244 238; /* #F7F4EE warm off-white */
+  --color-surface: 255 253 249; /* #FFFDF9 */
+  --color-surface-raised: 241 237 229; /* #F1EDE5 */
+  --color-surface-overlay: 232 227 217; /* #E8E3D9 */
+
+  /* Ink text on off-white: ~15:1. Muted: ~6.5:1. */
+  --color-ink: 22 22 30; /* #16161E */
+  --color-ink-muted: 84 86 104; /* #545668 */
+  --color-ink-faint: 140 142 160; /* #8C8EA0, decorative only */
+
+  --color-line: 224 219 208; /* #E0DBD0 */
+  --color-line-strong: 196 190 176; /* #C4BEB0 */
+
+  /* Cosmic hues, muted for daylight. */
+  --color-cosmic-blue: 74 96 168; /* #4A60A8 */
+  --color-cosmic-violet: 110 86 172; /* #6E56AC */
+  --color-cosmic-indigo: 198 202 226; /* #C6CAE2 */
+
+  /* Same brass accent. Darkened variant for text use on light. */
+  --color-accent: 176 122 42; /* #B07A2A, ~4.6:1 on off-white */
+  --color-accent-ink: 255 253 249;
+
+  --color-focus: 176 122 42;
+  --color-danger: 178 52 52;
+  --color-success: 42 122 78;
+
+  --shadow-soft: 0 1px 2px rgb(22 22 30 / 0.06),
+    0 8px 24px -8px rgb(22 22 30 / 0.12);
+  --shadow-lift: 0 2px 6px rgb(22 22 30 / 0.08),
+    0 24px 48px -16px rgb(22 22 30 / 0.18);
+  --shadow-glow: 0 0 0 1px rgb(var(--color-accent) / 0.25),
+    0 0 40px -8px rgb(var(--color-accent) / 0.25);
+}
+
+/* ---------- Reduced motion: yield globally ---------- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+    --motion-slow: 0ms;
+    --motion-drift: 0ms;
+  }
+}
