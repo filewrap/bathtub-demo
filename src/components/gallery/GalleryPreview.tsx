@@ -15,10 +15,10 @@ export function GalleryPreview() {
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div className="max-w-xl">
           <h2 id="gallery-preview-heading" className="text-3xl md:text-4xl">
-            Every tub is a small, private galaxy.
+            Proof, in low light.
           </h2>
           <p className="mt-4 text-ink-muted">
-            Pick the one you want to disappear into.
+            Tubs in images and video. Look as long as you like.
           </p>
         </div>
         <Link

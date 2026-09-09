@@ -1,0 +1,99 @@
+.row {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  /* Soft edges so names emerge from and sink into the void. */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  gap: var(--space-10);
+  padding-inline-end: var(--space-10);
+  will-change: transform;
+  animation-name: drift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: var(--marquee-duration, 60s);
+}
+
+.reverse .track {
+  animation-direction: reverse;
+}
+
+.copy {
+  display: flex;
+  flex: none;
+  gap: var(--space-10);
+  align-items: center;
+}
+
+.name {
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  letter-spacing: 0.01em;
+  color: rgb(var(--color-ink-muted));
+  transition: color var(--motion-base) var(--ease-gravity);
+}
+
+@media (min-width: 768px) {
+  .name {
+    font-size: var(--text-2xl);
+  }
+}
+
+/* Pause while the visitor points at or focuses within the row. */
+@media (hover: hover) {
+  .row:hover .track {
+    animation-play-state: paused;
+  }
+  .row:hover .name {
+    color: rgb(var(--color-ink));
+  }
+}
+.row:focus-within .track {
+  animation-play-state: paused;
+}
+
+/* The track is two identical copies; moving by exactly one copy loops
+   without a visible seam. */
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Reduced motion: no auto-scroll. Present the names as a static wrapped
+   list, hide the duplicate copy, drop the edge mask so nothing is cut. */
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .track {
+    animation: none;
+    width: 100%;
+    padding-inline-end: 0;
+  }
+  .copy {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: var(--space-3);
+    column-gap: var(--space-6);
+  }
+  .duplicate {
+    display: none;
+  }
+}
