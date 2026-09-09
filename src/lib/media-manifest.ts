@@ -54,4 +54,46 @@ export const HERO_MEDIA: HeroMedia = {
   },
 };
 
-export const GALLERY_ITEMS: GalleryItem[] = [];
+function image(
+  id: string,
+  width: number,
+  height: number,
+  alt: string,
+): GalleryItem {
+  const src = `/media/gallery/${id}.svg`;
+  return {
+    id,
+    type: "image",
+    sources: [{ src, type: "image/svg+xml" }],
+    poster: src,
+    width,
+    height,
+    alt,
+  };
+}
+
+/**
+ * Placeholder gallery. Replace SVGs with real photography and video. The
+ * `orbit-loop` video source intentionally does not exist yet, which
+ * exercises the per-item failure placeholder (AC-NYX-MG-001.6).
+ */
+export const GALLERY_ITEMS: GalleryItem[] = [
+  image("compact-acrylic", 1200, 900, "Compact acrylic soaking tub, brass rim catching the last light."),
+  image("standard-cast-iron", 1200, 1500, "Standard cast iron tub, matte black, on a dark stone floor."),
+  image("grand-stone-resin", 1600, 1000, "Grand stone resin tub, wide and shallow-lit, in an empty room."),
+  {
+    id: "orbit-loop",
+    type: "video",
+    sources: [{ src: "/media/gallery/orbit-loop.mp4", type: "video/mp4" }],
+    poster: "/media/gallery/orbit-loop.svg",
+    width: 1600,
+    height: 900,
+    alt: "Slow orbit around a filled tub, steam drifting upward.",
+  },
+  image("chromotherapy-violet", 1200, 1200, "Underwater LEDs turning the water a deep violet."),
+  image("deep-soak-detail", 1200, 900, "Detail of a deep-soak rim, water at the brim."),
+  image("air-jets-night", 1600, 1000, "Air jets surfacing in a dark tub, seen from above."),
+  image("heater-panel", 1200, 1500, "Inline heater control panel glowing amber."),
+];
+
+export const GALLERY_PREVIEW_COUNT = 4;

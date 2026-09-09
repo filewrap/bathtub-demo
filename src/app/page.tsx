@@ -1,4 +1,5 @@
 import { HeaderHero } from "@/components/hero/HeaderHero";
+import { GalleryPreview } from "@/components/gallery/GalleryPreview";
 import { PagePlaceholder } from "@/components/shell/PagePlaceholder";
 
 export default function HomePage() {
@@ -7,8 +8,9 @@ export default function HomePage() {
       <HeaderHero />
       <PagePlaceholder
         title="The rest of the house"
-        lede="Value promise, tub range, gallery preview, and customers atlas arrive in later work orders."
+        lede="Value promise, tub range, configurator entry, and customers atlas arrive in WO-7."
       />
+      <GalleryPreview />
     </>
   );
 }
